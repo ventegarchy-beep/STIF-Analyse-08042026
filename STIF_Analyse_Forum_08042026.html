@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STIF (ALSTI) — Analyse Boursière 08/04/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #04060f;
+    --surface: #080c18;
+    --surface2: #0d1226;
+    --border: #131a30;
+    --heading: #eef0ff;
+    --text: #b8bde0;
+    --sub: #6872a8;
+    --accent: #fb923c;
+    --accent-dim: rgba(251,146,60,0.10);
+    --green: #34d399;
+    --red: #f87171;
+    --yellow: #fbbf24;
+    --orange: #fb923c;
+    --blue: #38bdf8;
+    --purple: #c084fc;
+    --indigo: #818cf8;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Exo 2', sans-serif; font-size: 15px; line-height: 1.65; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px 60px; }
+
+  .hero { position: relative; padding: 52px 36px 40px; border-bottom: 1px solid var(--border); overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 80% 40%, rgba(251,146,60,0.07) 0%, transparent 70%); pointer-events: none; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 7px; background: var(--accent-dim); border: 1px solid rgba(251,146,60,0.3); border-radius: 20px; padding: 4px 14px; font-size: 11.5px; font-weight: 600; letter-spacing: .06em; color: var(--orange); text-transform: uppercase; margin-bottom: 18px; }
+  .hero-badge::before { content: '◆'; font-size: 9px; }
+  .hero h1 { font-size: 2.8rem; font-weight: 700; color: var(--heading); letter-spacing: -.02em; line-height: 1.1; margin-bottom: 4px; }
+  .hero h1 span { color: var(--orange); }
+  .hero-ct { font-size: 13px; color: var(--sub); margin-bottom: 18px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .hero-ct strong { color: var(--text); }
+  .hero-tagline { font-size: 1.05rem; color: var(--sub); font-style: italic; margin-bottom: 26px; max-width: 680px; }
+  .course-line { font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 700; color: var(--heading); display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .course-line .up { font-size: 1rem; padding: 3px 10px; border-radius: 8px; background: rgba(52,211,153,0.12); color: var(--green); border: 1px solid rgba(52,211,153,0.2); }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 12.5px; color: var(--sub); }
+  .hero-meta strong { color: var(--text); font-weight: 600; }
+  .npc { font-size: 11px; color: #4a5080; font-style: italic; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+
+  /* CONTEXTE UPDATE */
+  .update-box { background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.25); border-radius: 10px; padding: 16px 20px; margin-top: 16px; font-size: 13.5px; color: #fde68a; line-height: 1.65; }
+  .update-box strong { color: var(--yellow); }
+
+  section { margin-top: 40px; }
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .alert { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-radius: 10px; margin-bottom: 10px; border-left: 3px solid; font-size: 14px; }
+  .alert .icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .alert strong { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 3px; }
+  .ag { background: rgba(52,211,153,0.07); border-color: var(--green); color: #a7f3d0; }
+  .ag strong { color: var(--green); }
+  .aw { background: rgba(251,191,36,0.07); border-color: var(--yellow); color: #fde68a; }
+  .aw strong { color: var(--yellow); }
+  .ab { background: rgba(56,189,248,0.07); border-color: var(--blue); color: #bae6fd; }
+  .ab strong { color: var(--blue); }
+  .ar { background: rgba(248,113,113,0.07); border-color: var(--red); color: #fecaca; }
+  .ar strong { color: var(--red); }
+
+  /* COMPARATIF 27/03 vs 08/04 */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+  .comp-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .comp-card.old { border-color: rgba(248,113,113,0.25); }
+  .comp-card.new { border-color: rgba(52,211,153,0.25); }
+  .comp-header { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 12px; }
+  .comp-header.old { color: var(--red); }
+  .comp-header.new { color: var(--green); }
+  .comp-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(19,26,48,0.5); font-size: 13px; }
+  .comp-row:last-child { border-bottom: none; }
+  .comp-lbl { color: var(--sub); }
+  .comp-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--heading); }
+
+  .kg { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 14px 14px; }
+  .kl { font-size: 10.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--sub); margin-bottom: 6px; }
+  .kv { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 700; color: var(--heading); line-height: 1; }
+  .kd { font-size: 11px; margin-top: 5px; }
+  .kd.up { color: var(--green); }
+  .kd.down { color: var(--red); }
+  .kd.neu { color: var(--sub); }
+  .kd.warn { color: var(--yellow); }
+  .ks { font-size: 11px; color: var(--sub); margin-top: 3px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-top: 12px; }
+  .card h3 { font-size: 1rem; font-weight: 700; color: var(--heading); margin-bottom: 14px; }
+  .card p { color: #6872a8; line-height: 1.7; font-size: 14px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { background: var(--surface2); color: var(--sub); font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 9px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid rgba(19,26,48,0.6); color: var(--text); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  .dt { margin-top: 12px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .dt td { color: #6872a8; font-size: 13.5px; }
+
+  /* TIMELINE */
+  .tl { position: relative; padding-left: 28px; margin-top: 12px; }
+  .tl::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .tli { position: relative; margin-bottom: 18px; }
+  .tli::before { content: ''; position: absolute; left: -24px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--border); border: 2px solid var(--bg); }
+  .tli.done::before { background: var(--green); }
+  .tli.bad::before { background: var(--red); }
+  .tli.key::before { background: var(--orange); }
+  .tli.now::before { background: var(--yellow); box-shadow: 0 0 8px rgba(251,191,36,0.5); }
+  .tli.next::before { background: var(--indigo); }
+  .tld { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 3px; }
+  .tld.done { color: var(--green); }
+  .tld.bad { color: var(--red); }
+  .tld.key { color: var(--orange); }
+  .tld.now { color: var(--yellow); }
+  .tld.next { color: var(--indigo); }
+  .tldesc { font-size: 13.5px; color: #6872a8; line-height: 1.55; }
+  .tldesc strong { color: var(--text); }
+
+  /* FIBONACCI */
+  .frow { display: grid; grid-template-columns: 100px 1fr 100px; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(19,26,48,0.5); }
+  .frow:last-child { border-bottom: none; }
+  .frow.cours { background: rgba(251,146,60,0.07); border-radius: 8px; padding: 10px 12px; margin: 2px -12px; border: 1px solid rgba(251,146,60,0.25); }
+  .frow.support { background: rgba(52,211,153,0.04); border-radius: 6px; padding: 8px 12px; margin: 1px -12px; border: 1px solid rgba(52,211,153,0.15); }
+  .flvl { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #6872a8; font-weight: 600; }
+  .frow.cours .flvl { color: var(--orange); font-weight: 700; }
+  .frow.support .flvl { color: var(--green); }
+  .fbar-wrap { background: rgba(255,255,255,0.04); border-radius: 4px; height: 8px; }
+  .fbar { height: 8px; border-radius: 4px; background: rgba(251,146,60,0.2); }
+  .frow.cours .fbar { background: var(--orange); }
+  .frow.support .fbar { background: rgba(52,211,153,0.4); }
+  .fprice { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; color: var(--text); text-align: right; }
+  .frow.cours .fprice { color: var(--orange); font-size: 1.1rem; }
+  .frow.support .fprice { color: var(--green); }
+  .fib-note { margin-top: 14px; font-size: 12.5px; color: var(--sub); padding: 12px 16px; background: rgba(251,146,60,0.05); border-radius: 8px; border-left: 3px solid rgba(251,146,60,0.35); }
+
+  /* CONSENSUS */
+  .analysts-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-top: 12px; }
+  .analyst-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .analyst-card.revised { border-color: rgba(248,113,113,0.2); }
+  .aname { font-weight: 700; color: var(--heading); font-size: 14px; margin-bottom: 3px; }
+  .adate { font-size: 11px; color: var(--sub); margin-bottom: 10px; }
+  .atarget { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 700; color: var(--green); }
+  .atarget.lower { color: var(--yellow); }
+  .arec { display: inline-block; padding: 2px 10px; border-radius: 20px; background: rgba(52,211,153,0.12); color: var(--green); border: 1px solid rgba(52,211,153,0.25); font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 6px; letter-spacing: .04em; }
+  .aupside { font-size: 11.5px; color: var(--sub); margin-top: 6px; }
+  .aupside span { color: var(--green); font-weight: 700; }
+  .cons-box { background: rgba(251,146,60,0.06); border: 1px solid rgba(251,146,60,0.2); border-radius: 10px; padding: 18px 20px; margin-top: 14px; display: flex; align-items: center; gap: 20px; }
+  .cons-box .big { font-family: 'JetBrains Mono', monospace; font-size: 2rem; font-weight: 700; color: var(--orange); flex-shrink: 0; }
+  .cons-box .det { font-size: 13.5px; color: #6872a8; }
+  .cons-box .det strong { color: var(--heading); display: block; margin-bottom: 3px; }
+
+  .pg { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 12px; }
+  .pc { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .pc h4 { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 4px; }
+  .pc h4.ct { color: var(--red); }
+  .pc h4.mt { color: var(--orange); }
+  .pc h4.lt { color: var(--green); }
+  .pc .horizon { font-size: 10.5px; color: var(--sub); margin-bottom: 12px; }
+  .pc ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .pc ul li { font-size: 13px; color: #6872a8; padding-left: 14px; position: relative; }
+  .pc ul li::before { content: '›'; position: absolute; left: 0; font-weight: 700; color: var(--orange); }
+
+  .verdict { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-top: 12px; position: relative; overflow: hidden; }
+  .verdict::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--orange)); }
+  .verdict h3 { font-size: 1rem; font-weight: 700; color: var(--heading); margin-bottom: 12px; }
+  .verdict p { font-size: 14px; color: #6872a8; line-height: 1.75; margin-bottom: 12px; }
+  .conclu { background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.2); border-radius: 10px; padding: 16px 20px; margin-top: 18px; font-size: 13.5px; color: #fde68a; line-height: 1.7; }
+  .conclu .clabel { color: var(--yellow); display: block; margin-bottom: 8px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
+  .conclu .cline { display: block; color: var(--heading); margin-bottom: 6px; font-size: 14px; }
+
+  .score-wrap { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
+  .score-badge { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--orange); display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(251,146,60,0.08); flex-shrink: 0; }
+  .score-badge .sn { font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 700; color: var(--orange); line-height: 1; }
+  .score-badge .sl { font-size: 9px; color: var(--sub); text-transform: uppercase; letter-spacing: .06em; }
+  .score-desc { font-size: 13.5px; color: var(--sub); }
+  .score-desc strong { color: var(--heading); display: block; font-size: 1rem; margin-bottom: 3px; }
+
+  .tag { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+  .tag-green { background: rgba(52,211,153,0.12); color: var(--green); }
+  .tag-yellow { background: rgba(251,191,36,0.12); color: var(--yellow); }
+  .tag-orange { background: rgba(251,146,60,0.12); color: var(--orange); }
+  .tag-blue { background: rgba(56,189,248,0.12); color: var(--blue); }
+  .tag-red { background: rgba(248,113,113,0.12); color: var(--red); }
+
+  footer { background: var(--surface); border-top: 1px solid var(--border); margin-top: 50px; padding: 20px; font-size: 11.5px; color: #4a5080; line-height: 1.6; }
+  @media (max-width: 700px) {
+    .hero h1 { font-size: 2rem; }
+    .kg { grid-template-columns: repeat(2,1fr); }
+    .pg { grid-template-columns: 1fr; }
+    .compare-grid, .analysts-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-badge">⚡ Mise à jour J+12 — Rebond technique sur survente</div>
+    <h1>STI<span>F</span></h1>
+    <p class="hero-ct">Analyse CT / MT / LT — <strong>08/04/2026 11h35</strong> · Mise à jour post-analyse du 27/03/2026</p>
+    <p class="hero-tagline">Groupe STIF — Spécialiste de la protection contre les explosions (BESS, poussières industrielles). Le cours (44,06 €) reste dans la zone de survente établie depuis la chute post-résultats du 27 mars. Rebond technique +4,66% sans news spécifique aujourd'hui</p>
+    <div class="course-line">
+      <span>44,06 €</span>
+      <span class="up">▲ +4,66 %</span>
+      <span style="font-size:.9rem;color:var(--sub);font-family:'Exo 2',sans-serif;font-weight:400">ALSTI · Euronext Growth Paris</span>
+    </div>
+    <div class="hero-meta">
+      <span>📅 <strong>8 avril 2026 — 11h35 CET</strong></span>
+      <span>🏙️ <strong>Saint-Georges-sur-Loire, France</strong></span>
+      <span>🔬 <strong>ISIN</strong> FR001400MDW2</span>
+      <span>📊 <strong>RSI(14)</strong> 32,32 ⚡ · <strong>MACD ZéroLag</strong> −4,051</span>
+      <span>📈 <strong>~5 135 455 actions</strong> · Cap ~226 M€</span>
+    </div>
+
+    <div class="update-box">
+      <strong>⟳ Note : </strong> Cette analyse est une mise à jour de celle du 27/03/2026. La situation technique est quasi-identique (RSI 32, survente persistante) mais le contexte macro s'est dégradé supplémentairement : guerre US-Iran, hausse des prix du pétrole, tarifs douaniers Trump pesant sur l'ensemble de la cote. Le rebond de +4,66% ce jour est <strong>technique</strong> (rebond de survente), sans communiqué STIF publié ce matin. Les données fondamentales sont inchangées depuis le 26/03/2026.
+    </div>
+
+    <p class="npc">⚠️ NPC — Analyse personnelle réalisée à titre informatif uniquement. Pas un conseil en investissement. DYOR avant toute décision. Cours différés de 15 min (ProRealTime).</p>
+  </header>
+
+  <!-- COMPARATIF -->
+  <section>
+    <div class="section-title">Comparatif 27/03/2026 vs 08/04/2026</div>
+    <div class="compare-grid">
+      <div class="comp-card old">
+        <div class="comp-header old">📌 27 mars 2026 — Jour de la chute</div>
+        <div class="comp-row"><span class="comp-lbl">Cours</span><span class="comp-val" style="color:var(--red)">45,10 €</span></div>
+        <div class="comp-row"><span class="comp-lbl">Variation jour</span><span class="comp-val" style="color:var(--red)">−24,46%</span></div>
+        <div class="comp-row"><span class="comp-lbl">RSI (14)</span><span class="comp-val" style="color:var(--yellow)">32,36</span></div>
+        <div class="comp-row"><span class="comp-lbl">MACD ZéroLag</span><span class="comp-val" style="color:var(--red)">−2,187</span></div>
+        <div class="comp-row"><span class="comp-lbl">Contexte</span><span class="comp-val" style="color:var(--sub);font-family:inherit;font-size:12px">Résultats +31% EBITDA</span></div>
+      </div>
+      <div class="comp-card new">
+        <div class="comp-header new">▶ 08 avril 2026 — Aujourd'hui</div>
+        <div class="comp-row"><span class="comp-lbl">Cours</span><span class="comp-val" style="color:var(--green)">44,06 €</span></div>
+        <div class="comp-row"><span class="comp-lbl">Variation jour</span><span class="comp-val" style="color:var(--green)">+4,66% (rebond tech.)</span></div>
+        <div class="comp-row"><span class="comp-lbl">RSI (14)</span><span class="comp-val" style="color:var(--yellow)">32,32</span></div>
+        <div class="comp-row"><span class="comp-lbl">MACD ZéroLag</span><span class="comp-val" style="color:var(--red)">−4,051</span></div>
+        <div class="comp-row"><span class="comp-lbl">Contexte</span><span class="comp-val" style="color:var(--sub);font-family:inherit;font-size:12px">Rebond sans news · macro tendue</span></div>
+      </div>
+    </div>
+
+    <div style="background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);border-radius:10px;padding:14px 18px;margin-top:12px;font-size:13.5px;color:#fecaca;line-height:1.65">
+      ⚠️ Le MACD est devenu <strong>plus négatif</strong> (−4,051 vs −2,187) malgré le rebond de ce jour — il continue de baisser, ce qui signale que la dynamique de fond reste baissière. Le RSI reste quasi-inchangé en survente (32,32 vs 32,36). <strong>Le rebond +4,66% est intra-séance sur faible liquidité</strong> — caractéristique d'Euronext Growth. Il ne signale pas encore de retournement haussier confirmé.
+    </div>
+  </section>
+
+  <!-- ALERTES -->
+  <section>
+    <div class="section-title">Alertes</div>
+
+    <div class="alert ar">
+      <span class="icon">📉</span>
+      <div>
+        <strong>RSI 32,32 — Survente persistante depuis 12 jours · MACD qui empire</strong>
+        La zone de survente (RSI &lt;35) dure depuis la chute du 27 mars. Le MACD a continué de se dégrader de −2,19 à −4,05 sur la période, signalant que la pression vendeuse structurelle n'est pas encore levée. Le rebond de ce matin est technique — sans volume anormal — et pourrait être de courte durée si le marché global reste sous pression.
+      </div>
+    </div>
+
+    <div class="alert ag">
+      <span class="icon">📊</span>
+      <div>
+        <strong>Résultats 2025 objectivement solides — CA +47,8%, RN +21%, dividende +15% (26/03/2026)</strong>
+        Les fondamentaux n'ont pas changé. CA 90,5 M€ (+47,8%), EBITDA 20,6 M€ (+31%), RN 11,8 M€ (+21%), dividende 0,68 €/action. La chute était une réaction de déception de marché sur les marges vs attentes — pas un effondrement des résultats. À 44 €, la capitalisation (~226 M€) représente 2,5× le CA 2025 — ce qui est peu pour une société en croissance forte.
+      </div>
+    </div>
+
+    <div class="alert ab">
+      <span class="icon">📆</span>
+      <div>
+        <strong>Rapport financier annuel complet avant le 30 avril 2026 — AGM le 22 mai 2026</strong>
+        Le rapport financier annuel complet (avec données auditées, détail de la dette, FCL) sera publié avant le 30 avril. L'AGM du 22 mai donnera lieu au vote du dividende 0,68 €/action. Ces deux événements sont les prochains catalyseurs potentiels. Si le rapport financier révèle des données positives inattendues (trésorerie, FCL) → potentiel rebond.
+      </div>
+    </div>
+
+    <div class="alert ag">
+      <span class="icon">🌍</span>
+      <div>
+        <strong>Pipeline commercial robuste : Tesla 25 M€ 2026, CATL 5-8 M€, Sungrow, acquisition SAFEVENT (DK)</strong>
+        Renouvellement Tesla 25 M€ pour 2026 ✓ · Contrat CATL 5-8 M€ (panneaux anti-explosion nouvelle génération) ✓ · Volumes significatifs en Asie (Tesla megafactory Shanghai, Sungrow Thaïlande) ✓ · Acquisition SAFEVENT (Danemark, 75%, mars 2026) — réseau EU étendu via Stuvex Nordic. Objectif 2030 : 200 M€ CA / >20% EBITDA réaffirmé.
+      </div>
+    </div>
+
+    <div class="alert aw">
+      <span class="icon">⚠️</span>
+      <div>
+        <strong>Macro défavorable aggravée depuis le 27/03 : guerre US-Iran + droits de douane Trump</strong>
+        Depuis la chute du 27 mars, le contexte macro s'est dégradé : la guerre US-Iran fait grimper le pétrole, les tarifs douaniers Trump créent une pression macro générale sur les marchés. STIF exporte 87% de son CA (France 13%) — l'effet change et les conditions commerciales internationales peuvent peser. Néanmoins, STIF vend des équipements de sécurité industrielle obligatoires — pas un produit de consommation discrétionnaire.
+      </div>
+    </div>
+  </section>
+
+  <!-- KPI GRID -->
+  <section>
+    <div class="section-title">KPIs Clés — Sources Vérifiées 08/04/2026</div>
+    <div class="kg">
+      <div class="kpi">
+        <div class="kl">Cours</div>
+        <div class="kv">44,06 €</div>
+        <div class="kd up">▲ +4,66% séance</div>
+        <div class="ks">PRT 11:13 CET, diff. 15min</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">RSI (14)</div>
+        <div class="kv">32,32</div>
+        <div class="kd warn">⚡ Survente franche</div>
+        <div class="ks">Lu sur graphique PRT</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">MACD ZéroLag</div>
+        <div class="kv">−4,051</div>
+        <div class="kd down">▼ S'aggrave</div>
+        <div class="ks">vs −2,187 le 27/03</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Nombre actions</div>
+        <div class="kv">5 135 455</div>
+        <div class="kd neu">Au 31/03/2026</div>
+        <div class="ks">Communiqué AMF 03/04</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Capitalisation</div>
+        <div class="kv">~226 M€</div>
+        <div class="kd neu">44,06 × 5,135 M</div>
+        <div class="ks">Calculé</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">CA 2025</div>
+        <div class="kv">90,5 M€</div>
+        <div class="kd up">▲ +47,8%</div>
+        <div class="ks">Résultats 26/03/2026</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">EBITDA 2025</div>
+        <div class="kv">20,6 M€</div>
+        <div class="kd warn">Marge 22,7%</div>
+        <div class="ks">vs 25,2% en 2024</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Dividende 2025</div>
+        <div class="kv">0,68 €</div>
+        <div class="kd up">▲ vs 0,59 € en 2024</div>
+        <div class="ks">Vote AGM 22 mai</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Fib. 38,2%</div>
+        <div class="kv">38,9 €</div>
+        <div class="kd warn">Support clé −12%</div>
+        <div class="ks">Lu sur graphique PRT</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Fib. 50%</div>
+        <div class="kv">49,0 €</div>
+        <div class="kd up">Résistance +11%</div>
+        <div class="ks">Lu sur graphique PRT</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Obj. analysts moy.</div>
+        <div class="kv">84,40 €</div>
+        <div class="kd up">+91% upside</div>
+        <div class="ks">Investing.com 06/04</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Rapport annuel</div>
+        <div class="kv">Avant 30/04</div>
+        <div class="kd up">Dans 22 jours</div>
+        <div class="ks">Puis AGM 22 mai</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOUVEAUTÉS DEPUIS 27/03 -->
+  <section>
+    <div class="section-title">Nouveautés depuis la dernière analyse (27/03 → 08/04)</div>
+    <div class="tl">
+
+      <div class="tli done">
+        <div class="tld done">✓ 3 Avr. 2026 — Communiqué AMF : 5 135 455 actions au 31/03/2026</div>
+        <div class="tldesc">Déclaration réglementaire confirmant le nombre exact d'actions en circulation. 5 135 455 actions · droits de vote théoriques : 7 756 089 · droits de vote nets : 7 749 576. Aucune nouvelle dilution observée.</div>
+      </div>
+
+      <div class="tli done">
+        <div class="tld done">✓ Mars-Avr. 2026 — Intégration SAFEVENT (Danemark, 75%) se poursuit</div>
+        <div class="tldesc">L'acquisition de SAFEVENT via Stuvex (rebaptisé Stuvex Nordic) est effective depuis le 12 mars 2026. Renforcement du réseau scandinave de protection contre les explosions.</div>
+      </div>
+
+      <div class="tli bad">
+        <div class="tld bad">✗ Sem. 30/03-07/04 — Macro aggravée : guerre US-Iran, pétrole ↑, tarifs Trump</div>
+        <div class="tldesc">Le conflit US-Iran s'intensifie depuis le 28 février. Cours du pétrole en forte hausse. Les tarifs douaniers annoncés par Trump créent une incertitude sur les exportations industrielles. Le marché global est en sell-off — ALSTI baisse de ~45 à ~41 € entre le 27/03 et le 07/04 avant le rebond de ce matin.</div>
+      </div>
+
+      <div class="tli now">
+        <div class="tld now">▶ AUJOURD'HUI — 8 avril 2026, 11h35 — 44,06 € (+4,66%)</div>
+        <div class="tldesc">Rebond technique sans news spécifique STIF. Probablement un rebond global du marché (espoir de cessez-le-feu en Iran, stabilisation des marchés). RSI 32 inchangé — la zone de survente n'est pas encore quittée.</div>
+      </div>
+
+      <div class="tli next">
+        <div class="tld next">→ Avant 30 Avr. 2026 — Rapport financier annuel 2025 complet</div>
+        <div class="tldesc">Données auditées complètes : trésorerie, flux de trésorerie libre, détail de la dette, ratios financiers. Permettra de vérifier si les marges de STUVEX et BOSS progressent vers les standards du groupe.</div>
+      </div>
+
+      <div class="tli next">
+        <div class="tld next">→ 22 Mai 2026 — AGM : vote dividende 0,68 € + questions stratégiques</div>
+        <div class="tldesc">Assemblée Générale Mixte. Vote du dividende. Présentation de la stratégie 2026 par le management. Potentiel de questions des actionnaires sur la politique d'acquisitions et les perspectives de marge.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FIBONACCI -->
+  <section>
+    <div class="section-title">Analyse Technique — Fibonacci (inchangé depuis 27/03)</div>
+    <div class="card">
+      <h3>Fibonacci tracé ProRealTime 1S — Base : 6,2 € (0%) → ATH : ~91,4 € (100%)</h3>
+      <p style="margin-bottom:16px">Amplitude ≈ 85,2 €. Structure Fibonacci identique à l'analyse du 27/03/2026 — les niveaux ne changent pas. La nouveauté est que le cours est à 44,06 € (vs 45,1 € le 27/03), légèrement plus bas dans la même zone.</p>
+
+      <div>
+        <div class="frow">
+          <div class="flvl" style="color:var(--red)">100% — ATH</div>
+          <div class="fbar-wrap"><div class="fbar" style="width:100%;background:rgba(248,113,113,0.3)"></div></div>
+          <div class="fprice" style="color:var(--red)">~91,4 €</div>
+        </div>
+        <div class="frow">
+          <div class="flvl" style="color:var(--indigo)">61,8%</div>
+          <div class="fbar-wrap"><div class="fbar" style="width:61.8%;background:var(--indigo)"></div></div>
+          <div class="fprice" style="color:var(--indigo)">59,1 €</div>
+        </div>
+        <div class="frow">
+          <div class="flvl">50%</div>
+          <div class="fbar-wrap"><div class="fbar" style="width:50%"></div></div>
+          <div class="fprice">49,0 €</div>
+        </div>
+        <div class="frow cours">
+          <div class="flvl">↑ Cours actuel</div>
+          <div class="fbar-wrap"><div class="fbar" style="width:44.7%"></div></div>
+          <div class="fprice">44,06 € ←</div>
+        </div>
+        <div class="frow support">
+          <div class="flvl">38,2% — Support</div>
+          <div class="fbar-wrap"><div class="fbar" style="width:38.2%"></div></div>
+          <div class="fprice">38,9 €</div>
+        </div>
+        <div class="frow">
+          <div class="flvl">23,6%</div>
+          <div class="fbar-wrap"><div class="fbar" style="width:23.6%"></div></div>
+          <div class="fprice">26,4 €</div>
+        </div>
+        <div class="frow">
+          <div class="flvl">0% — Plancher</div>
+          <div class="fbar-wrap"><div class="fbar" style="width:2%"></div></div>
+          <div class="fprice">6,2 €</div>
+        </div>
+      </div>
+
+      <div class="fib-note">
+        <strong style="color:var(--orange)">Lecture technique 08/04 :</strong> Le cours (44,06 €) reste <strong>entre le 38,2% (38,9 €) et le 50% (49 €)</strong>, légèrement en dessous du niveau du 27/03 (45,1 €). Le Golden Ratio (59,1 €) est la résistance MT clé à reconquérir pour valider un retournement. <strong>Support critique : 38,9 € (38,2% Fib)</strong> — si ce niveau cède, le prochain support est à 26,4 € (23,6%). La résistance immédiate est le 50% Fib à 49 €. Aucun changement structural par rapport au 27/03.
+      </div>
+    </div>
+  </section>
+
+  <!-- CONSENSUS -->
+  <section>
+    <div class="section-title">Couverture Analystes — État au 07-08/04/2026</div>
+    <div class="analysts-grid">
+
+      <div class="analyst-card revised">
+        <div class="aname">Euroland Corporate</div>
+        <div class="adate">Révisé 27/03/2026 post-résultats</div>
+        <div class="atarget lower">72,3 €</div>
+        <div class="arec">Achat</div>
+        <div class="aupside">Upside vs 44,06 € : <span>+64%</span> · Abaissé depuis 95,2 €</div>
+      </div>
+
+      <div class="analyst-card">
+        <div class="aname">GreenSome Finance</div>
+        <div class="adate">Confirmé 27/03/2026</div>
+        <div class="atarget">80,0 €</div>
+        <div class="arec">Achat</div>
+        <div class="aupside">Upside vs 44,06 € : <span>+82%</span></div>
+      </div>
+
+      <div class="analyst-card">
+        <div class="aname">Invest Securities / EuroLand</div>
+        <div class="adate">Achat 103,08 € · À confirmer post-rapport</div>
+        <div class="atarget">103,08 €</div>
+        <div class="arec">Achat</div>
+        <div class="aupside">Upside vs 44,06 € : <span>+134%</span></div>
+      </div>
+
+      <div class="analyst-card">
+        <div class="aname">GreenSome Finance (min)</div>
+        <div class="adate">Consensus Investing.com au 06/04/2026</div>
+        <div class="atarget">70,0 €</div>
+        <div class="arec">Achat</div>
+        <div class="aupside">Upside vs 44,06 € : <span>+59%</span> · Min consensus</div>
+      </div>
+
+    </div>
+
+    <div class="cons-box">
+      <div class="big">84,40 €</div>
+      <div class="det">
+        <strong>Objectif moyen 4 analystes au 06/04/2026 — Achat Fort · Upside +91%</strong>
+        Fourchette : 70 € (min) — 103,08 € (max). 4 recommandations Achat, 0 Vendre. L'ensemble de la couverture reste positif malgré la chute. L'objectif médian bas (70 €) offre encore +59% d'upside. Rapport financier avant le 30 avril attendu pour éventuelle mise à jour des modèles.
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSPECTIVES -->
+  <section>
+    <div class="section-title">Perspectives Court / Moyen / Long Terme</div>
+    <div class="pg">
+      <div class="pc">
+        <h4 class="ct">Court Terme</h4>
+        <div class="horizon">Horizon 1–4 semaines</div>
+        <ul>
+          <li>Rebond technique +4,66% ce matin</li>
+          <li>RSI 32 : zone survente — peut rebondir</li>
+          <li>MACD −4,05 : tendance toujours baissière</li>
+          <li>Résistance : 49 € (50% Fib)</li>
+          <li>Support critique : 38,9 € (38,2% Fib)</li>
+          <li>Liquidité faible Euronext Growth → volatilité</li>
+        </ul>
+      </div>
+      <div class="pc">
+        <h4 class="mt">Moyen Terme</h4>
+        <div class="horizon">Horizon 1–2 mois</div>
+        <ul>
+          <li>Rapport financier complet avant 30 avr.</li>
+          <li>AGM 22 mai : dividende 0,68 € / action</li>
+          <li>Intégration STUVEX + BOSS → amélioration marges</li>
+          <li>Contrats CATL + Sungrow : visibilité CA 2026</li>
+          <li>⚠️ Macro guerre Iran : incertitude persistante</li>
+          <li>Révision éventuelle objectifs analystes</li>
+        </ul>
+      </div>
+      <div class="pc">
+        <h4 class="lt">Long Terme</h4>
+        <div class="horizon">Horizon 6 mois – 4 ans</div>
+        <ul>
+          <li>BESS : marché en forte croissance décennale</li>
+          <li>Objectif 2030 : 200 M€ CA · >20% EBITDA</li>
+          <li>Tesla, CATL, Sungrow, Fluence, Wärtsilä ✓</li>
+          <li>Présence 3+ continents post-acquisitions</li>
+          <li>⚠️ Dilution marges phase d'intégration</li>
+          <li>Obj. max analystes : 103,08 € (+134%)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERDICT -->
+  <section>
+    <div class="section-title">Mon Avis Personnel — Mise à jour 08/04</div>
+    <div class="verdict">
+
+      <div class="score-wrap">
+        <div class="score-badge">
+          <div class="sn">7</div>
+          <div class="sl">/10</div>
+        </div>
+        <div class="score-desc">
+          <strong>Fondamentaux solides, zone de survente maintenue — thèse LT intacte mais momentum CT difficile</strong>
+          Le score reste identique au 27/03. Rien de nouveau n'est venu modifier fondamentalement le dossier.
+        </div>
+      </div>
+
+      <h3>Situation 12 jours après la chute :</h3>
+      <p>Le contexte n'a pas fondamentalement changé. STIF reste une société excellente en termes de fondamentaux (CA +47,8%, Tesla, CATL, BESS) qui a subi une correction violente par déception sur les marges, amplifiée par une dégradation macro globale (guerre US-Iran, tarifs Trump). Le fait que le MACD continue de se détériorer (−4,05 vs −2,19) malgré le maintien du RSI en survente suggère que le marché n'a pas encore "digéré" la correction — il y a encore de la pression vendeuse. Les investisseurs ayant pris des profits après +745% en 3 ans continuent de sortir. Le rebond d'aujourd'hui (+4,66%) sans news est probablement lié à un regain d'appétit global du marché (nouvelles géopolitiques moins défavorables en séance), pas à un catalyseur STIF spécifique.</p>
+
+      <h3 style="margin-top:14px">Ce qui a changé (en mieux) :</h3>
+      <p>La confirmation du nombre d'actions (5 135 455) permet de calculer précisément une capitalisation de ~226 M€ à 44 €, soit un ratio VE/CA de ~2,5× sur CA 2025. Pour une société en croissance de +47%, rentable, avec des clients comme Tesla et CATL, c'est une valorisation qui intègre beaucoup de pessimisme. Les 4 analystes maintiennent leurs objectifs Achat (obj. moyen 84 €). La dynamique commerciale 2026 est soutenue par les contrats existants.</p>
+
+      <div class="conclu">
+        <span class="clabel">⚡ Points de Surveillance — 08/04/2026</span>
+        <span class="cline">SUPPORTS : 38,9 € (38,2% Fib — critique, ne pas casser) · 26,4 € (23,6% — scénario défavorable)</span>
+        <span class="cline">RÉSISTANCES : 49 € (50% Fib) · 57 € (horizontal PRT) · 59,1 € (Golden Ratio = retournement confirmé)</span>
+        <span style="color:#fde68a">
+          📅 <strong style="color:var(--yellow)">Avant 30 avril</strong> : Rapport financier annuel 2025 complet — catalyseur potentiel si FCL et trésorerie meilleurs qu'attendus<br>
+          📅 <strong style="color:var(--yellow)">22 mai 2026</strong> : AGM + dividende 0,68 € (rendement ~1,5% au cours actuel)<br>
+          🔴 Alerte rouge : cassure sous 38,9 € (38,2% Fib) = accélération baissière vers 26,4 €<br>
+          ✅ Signal de retournement : reconquête du 50% Fib (49 €) en clôture avec volume → rebond MT validé
+        </span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="max-width:980px;margin:0 auto;padding:0 20px">
+    <strong style="color:#6872a8;font-size:12px">Sources documentées et vérifiées :</strong><br>
+    Graphique ProRealTime 1S ALSTI (08/04/2026 11:13, différé 15min) · Communiqué AMF : 5 135 455 actions au 31/03/2026 (finanzwire.fr, 03/04/2026) · Résultats annuels 2025 publiés 26/03/2026 (CA 90,5 M€, EBITDA 20,6 M€, RN 11,8 M€, div. 0,68 €) · Euroland Corporate — Achat 72,3 € (27/03/2026) · GreenSome Finance — Achat 80 € (27/03/2026) · Investing.com : 4 analystes, Achat Fort, obj. moy. 84,40 € (min 70, max 103,08) au 06/04/2026 · Renouvellement Tesla 25 M€ 2026 (actusnews.com, nov. 2025) · CATL contrat 5-8 M€ (webdisclosure, oct. 2025) · Volumes Asie BESS (actusnews.com, 09/02/2026) · Acquisition SAFEVENT 75% (actusnews.com, 12/03/2026) · AGM 22 mai 2026 · Rapport financier avant 30 avril 2026
+    <br><br>
+    <span style="color:#3a4060">Analyse réalisée le <strong style="color:#4a5080">8 avril 2026 à 11h35</strong> · Mise à jour de l'analyse du 27/03/2026 · NPC — Pas un conseil en investissement · DYOR.</span>
+  </div>
+</footer>
+
+</body>
+</html>
